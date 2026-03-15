@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tasting Event — Vendor Application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#FAF9F7;color:#1a1a18;min-height:100vh;padding:2rem 1rem 4rem;}
+.page-wrap{max-width:680px;margin:0 auto;}
+.page-head{text-align:center;padding:2.5rem 0 2rem;}
+.page-head .eyebrow{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#5F5E5A;border:0.5px solid #D3D1C7;border-radius:20px;padding:4px 14px;margin-bottom:1rem;}
+.page-head h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:400;line-height:1.15;color:#1a1a18;margin-bottom:.6rem;}
+.page-head h1 em{font-style:italic;color:#993C1D;}
+.page-head p{font-size:15px;color:#5F5E5A;line-height:1.65;}
+.card{background:#fff;border:0.5px solid #D3D1C7;border-radius:16px;padding:2rem;margin-bottom:1.5rem;}
+.wf-divider{display:flex;align-items:center;gap:12px;margin:1.75rem 0 1.25rem;}
+.wf-divider-line{flex:1;height:.5px;background:#E8E6E0;}
+.wf-section-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#888780;white-space:nowrap;}
+.wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.wf-grid.full{grid-template-columns:1fr;}
+.wf-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.wf-field:last-child{margin-bottom:0;}
+.wf-label{font-size:12px;font-weight:500;color:#5F5E5A;letter-spacing:.02em;}
+.wf-label .req{color:#D85A30;margin-left:2px;}
+input[type="text"],input[type="email"],input[type="tel"],input[type="url"],select,textarea{font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a18;background:#fff;border:0.5px solid #C4C2B8;border-radius:8px;padding:10px 13px;width:100%;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:#993C1D;box-shadow:0 0 0 3px rgba(153,60,29,.1);}
+textarea{resize:vertical;min-height:85px;line-height:1.55;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
+.wf-type-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px;}
+.wf-type-card{border:0.5px solid #D3D1C7;border-radius:12px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .15s;background:#fff;}
+.wf-type-card:hover{border-color:#993C1D;}
+.wf-type-card.active{border:1.5px solid #993C1D;background:rgba(153,60,29,.03);}
+.wf-type-card input[type="radio"]{display:none;}
+.wf-type-icon{font-size:24px;margin-bottom:7px;}
+.wf-type-name{font-size:14px;font-weight:500;color:#1a1a18;margin-bottom:3px;}
+.wf-type-desc{font-size:12px;color:#888780;line-height:1.4;}
+.wf-radio-pill{display:flex;align-items:center;gap:7px;border:0.5px solid #D3D1C7;border-radius:20px;padding:7px 15px;cursor:pointer;transition:all .15s;font-size:13px;color:#1a1a18;}
+.wf-radio-pill:hover{border-color:#993C1D;}
+.wf-radio-pill input{width:14px;height:14px;accent-color:#993C1D;}
+.wf-radio-pill.selected{background:rgba(153,60,29,.06);border-color:#993C1D;}
+.pill-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:5px;}
+.wf-yn-group{display:flex;gap:8px;}
+.wf-yn-btn{flex:1;padding:9px;border:0.5px solid #D3D1C7;border-radius:8px;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#888780;cursor:pointer;transition:all .15s;text-align:center;}
+.wf-yn-btn:hover{border-color:#993C1D;color:#1a1a18;}
+.wf-yn-btn.yes.active{background:rgba(153,60,29,.08);border-color:#993C1D;color:#993C1D;}
+.wf-yn-btn.no.active{background:#F5F4F0;border-color:#B4B2A9;color:#1a1a18;}
+.notice{border-radius:8px;padding:11px 15px;font-size:13px;line-height:1.55;margin-top:10px;}
+.notice.warn{background:#FAEEDA;border:0.5px solid #EF9F27;color:#633806;}
+.notice.info{background:#E6F1FB;border:0.5px solid #85B7EB;color:#0C447C;}
+.notice.success{background:#EAF3DE;border:0.5px solid #97C459;color:#27500A;}
+.notice a{color:inherit;font-weight:500;}
+.event-summary{display:grid;grid-template-columns:1fr 1fr;border:0.5px solid #D3D1C7;border-radius:12px;overflow:hidden;margin-bottom:6px;}
+.ev-cell{padding:13px 16px;border-bottom:0.5px solid #E8E6E0;}
+.ev-cell:nth-child(odd){border-right:0.5px solid #E8E6E0;}
+.ev-cell:nth-last-child(-n+2){border-bottom:none;}
+.ev-cell-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#888780;margin-bottom:4px;}
+.ev-cell-val{font-size:13px;font-weight:500;}
+.ev-cell-val.ok{color:#3B6D11;}
+.ev-cell-val.req{color:#993C1D;}
+.brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px;}
+.brand-item{display:flex;align-items:flex-start;gap:10px;border:0.5px solid #D3D1C7;border-radius:9px;padding:11px 13px;cursor:pointer;transition:all .15s;background:#fff;}
+.brand-item:hover{border-color:#993C1D;}
+.brand-item.checked{background:rgba(153,60,29,.04);border-color:#993C1D;}
+.brand-item input[type="checkbox"]{width:15px;height:15px;min-width:15px;margin-top:2px;accent-color:#993C1D;cursor:pointer;}
+.brand-name{font-size:13px;font-weight:500;color:#1a1a18;margin-bottom:2px;}
+.brand-sub{font-size:11px;color:#888780;line-height:1.35;}
+.req-list{border:0.5px solid #D3D1C7;border-radius:12px;overflow:hidden;}
+.req-row{display:flex;align-items:flex-start;gap:13px;padding:12px 16px;border-bottom:0.5px solid #E8E6E0;background:#fff;}
+.req-row:last-child{border-bottom:none;}
+.req-check{width:16px;height:16px;min-width:16px;margin-top:2px;accent-color:#993C1D;cursor:pointer;}
+.req-text{font-size:13px;color:#1a1a18;line-height:1.55;}
+.req-text strong{font-weight:500;}
+.tag{display:inline-block;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;}
+.tag.required{background:rgba(153,60,29,.1);color:#993C1D;}
+.tag.provided{background:#EAF3DE;color:#3B6D11;}
+.conditional{overflow:hidden;transition:max-height .35s ease,opacity .3s ease;}
+.conditional.hidden{max-height:0;opacity:0;pointer-events:none;}
+.conditional.visible{max-height:1800px;opacity:1;}
+.char-count{font-size:11px;color:#888780;text-align:right;margin-top:4px;}
+.submit-area{text-align:center;padding-top:1rem;}
+.agree-txt{font-size:12px;color:#888780;line-height:1.65;margin-bottom:1.25rem;}
+.agree-txt a{color:#993C1D;text-decoration:none;}
+.submit-btn{width:100%;max-width:420px;padding:14px;background:#993C1D;color:#FAECE7;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.03em;cursor:pointer;transition:background .15s,transform .1s;}
+.submit-btn:hover{background:#712B13;}
+.submit-btn:active{transform:scale(.99);}
+.submit-btn:disabled{background:#B4B2A9;cursor:not-allowed;transform:none;}
+.err-msg{color:#D85A30;font-size:13px;margin-top:.75rem;display:none;}
+.success-view{display:none;text-align:center;padding:3rem 1.5rem;}
+.success-icon{width:60px;height:60px;border-radius:50%;background:rgba(153,60,29,.1);margin:0 auto 1.25rem;display:flex;align-items:center;justify-content:center;}
+.success-icon svg{width:28px;height:28px;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:#1a1a18;margin-bottom:.6rem;}
+.success-msg{font-size:14px;color:#5F5E5A;line-height:1.7;}
+.sheets-ok{font-size:13px;color:#3B6D11;margin-top:.6rem;display:none;align-items:center;justify-content:center;gap:6px;}
+.sheets-err{font-size:13px;color:#854F0B;margin-top:.6rem;display:none;}
+.reset-btn{margin-top:1.75rem;padding:11px 32px;background:transparent;border:0.5px solid #D3D1C7;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#5F5E5A;cursor:pointer;transition:all .15s;}
+.reset-btn:hover{border-color:#993C1D;color:#993C1D;}
+@media(max-width:520px){
+  .wf-grid,.wf-type-selector,.event-summary,.brand-grid{grid-template-columns:1fr;}
+  .ev-cell:nth-child(odd){border-right:none;}
+  .ev-cell:nth-last-child(-n+2){border-bottom:0.5px solid #E8E6E0;}
+  .ev-cell:last-child{border-bottom:none;}
+  .page-head h1{font-size:32px;}
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-head">
+    <span class="eyebrow">Vendor Application</span>
+    <h1>Join Our <em>Tasting</em> Event</h1>
+    <p>Reserve your table and showcase your finest selections to discerning guests in Maryland.</p>
+  </div>
+
+  <div class="card" id="form-view">
+
+    <!-- Event summary -->
+    <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">What to expect</span><div class="wf-divider-line"></div></div>
+    <div class="event-summary">
+      <div class="ev-cell"><div class="ev-cell-lbl">Table provided</div><div class="ev-cell-val ok">6-foot table ✓</div></div>
+      <div class="ev-cell"><div class="ev-cell-lbl">Seating provided</div><div class="ev-cell-val ok">2 chairs ✓</div></div>
+      <div class="ev-cell"><div class="ev-cell-lbl">Representatives allowed</div><div class="ev-cell-val req">2 max per vendor</div></div>
+      <div class="ev-cell"><div class="ev-cell-lbl">Tasting cups</div><div class="ev-cell-val req">Bring your own ✗</div></div>
+    </div>
+
+    <!-- Vendor type -->
+    <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Vendor type</span><div class="wf-divider-line"></div></div>
+    <div class="wf-type-selector">
+      <label class="wf-type-card" id="card-wine" onclick="setType('wine')"><input type="radio" name="vtype" value="wine"/><div class="wf-type-icon">🍷</div><div class="wf-type-name">Wine vendor</div><div class="wf-type-desc">Wineries, importers, and wine distributors</div></label>
+      <label class="wf-type-card" id="card-spirits" onclick="setType('spirits')"><input type="radio" name="vtype" value="spirits"/><div class="wf-type-icon">🥃</div><div class="wf-type-name">Spirits vendor</div><div class="wf-type-desc">Distilleries, craft spirits, and liqueur producers</div></label>
+    </div>
+
+    <!-- Business details -->
+    <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Business details</span><div class="wf-divider-line"></div></div>
+    <div class="wf-grid">
+      <div class="wf-field"><label class="wf-label">Business name <span class="req">*</span></label><input type="text" id="biz-name" placeholder="Your business name"/></div>
+      <div class="wf-field"><label class="wf-label">Est. year</label><input type="text" id="est-year" placeholder="e.g. 1987"/></div>
+    </div>
+    <div class="wf-field"><label class="wf-label" id="region-label">Region / Appellation <span class="req">*</span></label><input type="text" id="region" placeholder="e.g. Napa Valley, Burgundy, Rioja"/></div>
+    <div class="wf-grid">
+      <div class="wf-field"><label class="wf-label">Website</label><input type="url" id="website" placeholder="https://"/></div>
+      <div class="wf-field"><label class="wf-label">Instagram handle</label><input type="text" id="instagram" placeholder="@yourbrand"/></div>
+    </div>
+
+    <!-- Wine offerings -->
+    <div id="wine-offerings" class="conditional hidden">
+      <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Wine offerings</span><div class="wf-divider-line"></div></div>
+      <div class="wf-field"><label class="wf-label">Wine types you'll be pouring <span class="req">*</span></label><div class="pill-group"><label class="wf-radio-pill"><input type="checkbox" class="wine-type" value="Red"/> Red</label><label class="wf-radio-pill"><input type="checkbox" class="wine-type" value="White"/> White</label><label class="wf-radio-pill"><input type="checkbox" class="wine-type" value="Rosé"/> Rosé</label><label class="wf-radio-pill"><input type="checkbox" class="wine-type" value="Sparkling"/> Sparkling</label><label class="wf-radio-pill"><input type="checkbox" class="wine-type" value="Dessert"/> Dessert</label><label class="wf-radio-pill"><input type="checkbox" class="wine-type" value="Natural"/> Natural / Orange</label></div></div>
+      <div class="wf-field"><label class="wf-label">Number of wines to present <span class="req">*</span></label><select id="wine-count"><option value="">Select…</option><option>1–3 wines</option><option>4–6 wines</option><option>7–10 wines</option><option>10+ wines</option></select></div>
+    </div>
+
+    <!-- Spirits offerings -->
+    <div id="spirits-offerings" class="conditional hidden">
+      <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Spirits offerings</span><div class="wf-divider-line"></div></div>
+      <div class="wf-field"><label class="wf-label">Spirit categories you'll be presenting <span class="req">*</span></label><div class="pill-group"><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Whiskey/Bourbon"/> Whiskey / Bourbon</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Gin"/> Gin</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Vodka"/> Vodka</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Rum"/> Rum</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Tequila/Mezcal"/> Tequila / Mezcal</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Brandy/Cognac"/> Brandy / Cognac</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Liqueur"/> Liqueur</label><label class="wf-radio-pill"><input type="checkbox" class="spirit-type" value="Other"/> Other</label></div></div>
+      <div class="wf-field"><label class="wf-label">Number of products to present <span class="req">*</span></label><select id="spirit-count"><option value="">Select…</option><option>1–3 products</option><option>4–6 products</option><option>7–10 products</option><option>10+ products</option></select></div>
+    </div>
+
+    <!-- Booth requirements -->
+    <div id="booth-section" class="conditional hidden">
+      <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Booth requirements</span><div class="wf-divider-line"></div></div>
+      <p style="font-size:13px;color:#5F5E5A;line-height:1.6;margin-bottom:14px;">Please review and confirm all booth requirements before submitting.</p>
+      <div class="req-list" style="margin-bottom:16px;">
+        <div class="req-row"><input type="checkbox" class="req-check must-confirm" id="req-cups"/><div class="req-text"><strong>Bring your own tasting cups</strong><span class="tag required">Required</span><br>You are responsible for providing sufficient tasting cups. Cups will not be available on-site. Branded cups are encouraged.</div></div>
+        <div class="req-row"><input type="checkbox" class="req-check must-confirm" id="req-reps"/><div class="req-text"><strong>Maximum 2 representatives per vendor</strong><span class="tag required">Required</span><br>Only 2 staff members per booth are permitted. Additional personnel will not be granted entry.</div></div>
+        <div class="req-row"><input type="checkbox" class="req-check" id="req-table"/><div class="req-text"><strong>One 6-foot table and 2 chairs provided</strong><span class="tag provided">Provided</span><br>A standard 6-foot table and two chairs will be set up at your space. No additional tables may be brought in.</div></div>
+      </div>
+      <div class="notice success" style="margin-bottom:14px;"><strong>Make your booth unforgettable.</strong> Vendors who invest in branded presentation consistently attract more guests and drive stronger sales. We strongly encourage you to bring:</div>
+      <div class="wf-field">
+        <label class="wf-label">Which branded items will you bring? <span style="font-size:11px;font-weight:400;color:#888780;">(select all that apply)</span></label>
+        <div class="brand-grid">
+          <label class="brand-item" onclick="toggleBrand(this)"><input type="checkbox" class="brand-item-cb" value="Branded tablecloth"/><div><div class="brand-name">Branded tablecloth</div><div class="brand-sub">Covers the full 6-ft table surface</div></div></label>
+          <label class="brand-item" onclick="toggleBrand(this)"><input type="checkbox" class="brand-item-cb" value="Pop-up banner"/><div><div class="brand-name">Pop-up banner / backdrop</div><div class="brand-sub">Retractable or step-and-repeat</div></div></label>
+          <label class="brand-item" onclick="toggleBrand(this)"><input type="checkbox" class="brand-item-cb" value="Table signage"/><div><div class="brand-name">Table signage / menu cards</div><div class="brand-sub">Tasting notes, pricing, or QR codes</div></div></label>
+          <label class="brand-item" onclick="toggleBrand(this)"><input type="checkbox" class="brand-item-cb" value="Branded cups"/><div><div class="brand-name">Branded tasting cups</div><div class="brand-sub">Logo cups double as takeaway souvenirs</div></div></label>
+          <label class="brand-item" onclick="toggleBrand(this)"><input type="checkbox" class="brand-item-cb" value="Swag/giveaways"/><div><div class="brand-name">Swag or branded giveaways</div><div class="brand-sub">Bottle openers, tote bags, stickers, etc.</div></div></label>
+          <label class="brand-item" onclick="toggleBrand(this)"><input type="checkbox" class="brand-item-cb" value="Brochures"/><div><div class="brand-name">Brochures / sell sheets</div><div class="brand-sub">Product info, ordering details, QR links</div></div></label>
+        </div>
+      </div>
+      <div class="wf-field" style="margin-top:14px;"><label class="wf-label">Other branded or display items you plan to bring</label><input type="text" id="other-brand" placeholder="e.g. ice bucket, wine cooler, product display stand…"/></div>
+    </div>
+
+    <!-- Maryland compliance -->
+    <div id="permit-section" class="conditional hidden">
+      <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Maryland compliance</span><div class="wf-divider-line"></div></div>
+      <div class="wf-field">
+        <label class="wf-label">Do you hold a valid Maryland tasting permit? <span class="req">*</span></label>
+        <div class="wf-yn-group"><button type="button" class="wf-yn-btn yes" onclick="setYN('tasting',true)">Yes</button><button type="button" class="wf-yn-btn no" onclick="setYN('tasting',false)">No</button></div>
+        <div id="tasting-yes" class="conditional hidden" style="margin-top:8px;"><div class="wf-field"><label class="wf-label">Tasting permit number</label><input type="text" id="tasting-permit-no" placeholder="MD-TASTE-XXXXXXXX"/></div></div>
+        <div id="tasting-no" class="conditional hidden"><div class="notice warn">A Maryland tasting permit is required to pour samples at this event. <a href="https://www.dllr.state.md.us/license/alc.shtml" target="_blank">Apply via DLLR</a> before your application can be approved.</div></div>
+      </div>
+      <div class="wf-field">
+        <label class="wf-label">Will you be selling products at the event? <span class="req">*</span></label>
+        <div class="wf-yn-group"><button type="button" class="wf-yn-btn yes" onclick="setYN('selling',true)">Yes</button><button type="button" class="wf-yn-btn no" onclick="setYN('selling',false)">No — tasting only</button></div>
+        <div id="selling-yes" class="conditional hidden" style="margin-top:10px;">
+          <div class="wf-field">
+            <label class="wf-label">Do you hold a valid Maryland retail sales license? <span class="req">*</span></label>
+            <div class="wf-yn-group"><button type="button" class="wf-yn-btn yes" onclick="setYN('retail',true)">Yes</button><button type="button" class="wf-yn-btn no" onclick="setYN('retail',false)">No</button></div>
+            <div id="retail-yes" class="conditional hidden" style="margin-top:8px;"><div class="wf-grid"><div class="wf-field"><label class="wf-label">License number</label><input type="text" id="retail-license-no" placeholder="MD-RETAIL-XXXXXXXX"/></div><div class="wf-field"><label class="wf-label">License expiration date</label><input type="text" id="retail-expiry" placeholder="MM/DD/YYYY"/></div></div><div class="notice info" style="margin-top:10px;">All on-site sales must comply with Maryland ABC regulations.</div></div>
+            <div id="retail-no" class="conditional hidden"><div class="notice warn">A retail sales license is required to sell at this event. <a href="https://www.dllr.state.md.us/license/alc.shtml" target="_blank">Learn more at DLLR</a>.</div><div class="wf-field" style="margin-top:10px;"><label class="wf-label">Would you like to participate as tasting-only instead?</label><div class="wf-yn-group"><button type="button" class="wf-yn-btn yes" onclick="setYN('fallback',true)">Yes, tasting only</button><button type="button" class="wf-yn-btn no" onclick="setYN('fallback',false)">No, I'll get licensed first</button></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-field">
+        <label class="wf-label">Will all staff hold TIPS or ServSafe alcohol certification? <span class="req">*</span></label>
+        <div class="wf-yn-group"><button type="button" class="wf-yn-btn yes" onclick="setYN('tips',true)">Yes</button><button type="button" class="wf-yn-btn no" onclick="setYN('tips',false)">Not yet</button></div>
+        <div id="tips-no" class="conditional hidden"><div class="notice warn">Maryland law requires responsible alcohol service training. Certification must be completed before the event date.</div></div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Contact person</span><div class="wf-divider-line"></div></div>
+    <div class="wf-grid">
+      <div class="wf-field"><label class="wf-label">First name <span class="req">*</span></label><input type="text" id="fname" placeholder="First name"/></div>
+      <div class="wf-field"><label class="wf-label">Last name <span class="req">*</span></label><input type="text" id="lname" placeholder="Last name"/></div>
+    </div>
+    <div class="wf-grid">
+      <div class="wf-field"><label class="wf-label">Email <span class="req">*</span></label><input type="email" id="email" placeholder="you@brand.com"/></div>
+      <div class="wf-field"><label class="wf-label">Phone</label><input type="tel" id="phone" placeholder="+1 (555) 000-0000"/></div>
+    </div>
+
+    <!-- Additional info -->
+    <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Additional info</span><div class="wf-divider-line"></div></div>
+    <div class="wf-field"><label class="wf-label">Special requirements or notes</label><textarea id="notes" placeholder="Electrical outlet, ice, refrigeration, accessibility needs…" maxlength="300"></textarea><div class="char-count"><span id="char-count">0</span> / 300</div></div>
+    <div class="wf-field"><label class="wf-label">How did you hear about us?</label><select id="source"><option value="">Select…</option><option>Email newsletter</option><option>Social media</option><option>Word of mouth</option><option>Previous event</option><option>Press / media</option><option>Other</option></select></div>
+
+    <div class="submit-area">
+      <p class="agree-txt">By submitting you agree to our <a href="#">vendor terms</a> and <a href="#">event guidelines</a>. Maryland ABC regulations apply to all vendors. Applications are reviewed within 5 business days.</p>
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit application</button>
+      <p class="err-msg" id="err-msg"></p>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="card success-view" id="success-view">
+    <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2 class="success-title">Application received</h2>
+    <p class="success-msg">Thank you, <strong id="s-name"></strong>! We've received the application for <strong id="s-biz"></strong> and will be in touch within 5 business days.</p>
+    <div class="sheets-ok" id="sheets-ok"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 8 6 12 14 4"/></svg> Saved to Google Sheets</div>
+    <div class="sheets-err" id="sheets-err">Could not reach Google Sheets — please contact the organizer directly.</div>
+    <button class="reset-btn" onclick="resetForm()">Submit another application</button>
+  </div>
+
+</div>
+<script>
+var SHEET_URL='https://script.google.com/macros/s/AKfycbw1WMhEKy9NjmFMO-X4jTLREZh9ED1UoiMxwrrRZ8NDQBNDvh-mGYCWUP2bjtXgjJrYPg/exec';
+var vType=null,yn={};
+
+document.getElementById('notes').addEventListener('input',function(){document.getElementById('char-count').textContent=this.value.length;});
+document.querySelectorAll('.wf-radio-pill input').forEach(function(cb){cb.addEventListener('change',function(){this.closest('.wf-radio-pill').classList.toggle('selected',this.checked);});});
+
+function show(el){if(el){el.classList.remove('hidden');el.classList.add('visible');}}
+function hide(el){if(el){el.classList.remove('visible');el.classList.add('hidden');}}
+function toggleBrand(l){setTimeout(function(){l.classList.toggle('checked',l.querySelector('input').checked);},0);}
+
+function setType(t){
+  vType=t;
+  document.getElementById('card-wine').classList.toggle('active',t==='wine');
+  document.getElementById('card-spirits').classList.toggle('active',t==='spirits');
+  if(t==='wine'){show(document.getElementById('wine-offerings'));hide(document.getElementById('spirits-offerings'));document.getElementById('region-label').innerHTML='Region / Appellation <span class="req">*</span>';}
+  else{show(document.getElementById('spirits-offerings'));hide(document.getElementById('wine-offerings'));document.getElementById('region-label').innerHTML='State / country of origin <span class="req">*</span>';}
+  show(document.getElementById('booth-section'));show(document.getElementById('permit-section'));
+}
+
+function setYN(k,v){
+  yn[k]=v;
+  document.querySelectorAll('button[onclick]').forEach(function(b){
+    var o=b.getAttribute('onclick');
+    if(o==="setYN('"+k+"',true)") b.classList.toggle('active',v===true);
+    if(o==="setYN('"+k+"',false)") b.classList.toggle('active',v===false);
+  });
+  var ye=document.getElementById(k+'-yes'),ne=document.getElementById(k+'-no');
+  if(ye){v?show(ye):hide(ye);}
+  if(ne){v?hide(ne):show(ne);}
+}
+
+function showErr(m){var e=document.getElementById('err-msg');e.textContent=m;e.style.display='block';}
+
+function buildRec(){
+  var types=vType==='wine'?[...document.querySelectorAll('.wine-type:checked')].map(function(x){return x.value;}).join(', '):[...document.querySelectorAll('.spirit-type:checked')].map(function(x){return x.value;}).join(', ');
+  var cnt=vType==='wine'?document.getElementById('wine-count').value:document.getElementById('spirit-count').value;
+  var branded=[...document.querySelectorAll('.brand-item-cb:checked')].map(function(x){return x.value;}).join(', ');
+  return{submitted:new Date().toLocaleDateString('en-US'),bizName:document.getElementById('biz-name').value.trim(),estYear:document.getElementById('est-year').value.trim(),region:document.getElementById('region').value.trim(),website:document.getElementById('website').value.trim(),instagram:document.getElementById('instagram').value.trim(),vendorType:vType==='wine'?'Wine':'Spirits',products:types,productCount:cnt,firstName:document.getElementById('fname').value.trim(),lastName:document.getElementById('lname').value.trim(),email:document.getElementById('email').value.trim(),phone:document.getElementById('phone').value.trim(),tastingPermit:yn['tasting']?'Yes':'No',tastingPermitNo:(document.getElementById('tasting-permit-no')||{value:''}).value.trim(),selling:yn['selling']?'Yes':'No',retailLicense:yn['retail']!==undefined?(yn['retail']?'Yes':'No'):'N/A',retailLicenseNo:(document.getElementById('retail-license-no')||{value:''}).value.trim(),retailExpiry:(document.getElementById('retail-expiry')||{value:''}).value.trim(),tipsCert:yn['tips']?'Yes':'Not yet',brandedItems:branded,otherBrand:document.getElementById('other-brand').value.trim(),notes:document.getElementById('notes').value.trim(),source:document.getElementById('source').value};
+}
+
+function submitForm(){
+  document.getElementById('err-msg').style.display='none';
+  if(!vType){showErr('Please select a vendor type.');return;}
+  var biz=document.getElementById('biz-name').value.trim(),region=document.getElementById('region').value.trim(),fname=document.getElementById('fname').value.trim(),lname=document.getElementById('lname').value.trim(),email=document.getElementById('email').value.trim();
+  if(!biz){showErr('Please enter your business name.');return;}
+  if(!region){showErr('Please enter your region or origin.');return;}
+  if(vType==='wine'){if(!document.querySelectorAll('.wine-type:checked').length){showErr('Please select at least one wine type.');return;}if(!document.getElementById('wine-count').value){showErr('Please select how many wines you\'ll present.');return;}}
+  else{if(!document.querySelectorAll('.spirit-type:checked').length){showErr('Please select at least one spirit category.');return;}if(!document.getElementById('spirit-count').value){showErr('Please select how many products you\'ll present.');return;}}
+  var mc=document.querySelectorAll('.must-confirm');for(var i=0;i<mc.length;i++){if(!mc[i].checked){showErr('Please confirm all required booth requirements.');return;}}
+  if(!fname||!lname){showErr('Please enter your full name.');return;}
+  if(!email||!email.includes('@')){showErr('Please enter a valid email address.');return;}
+  if(yn['tasting']===undefined){showErr('Please answer the Maryland tasting permit question.');return;}
+  if(yn['selling']===undefined){showErr('Please answer whether you\'ll be selling products.');return;}
+  if(yn['tips']===undefined){showErr('Please answer the responsible service certification question.');return;}
+  var rec=buildRec();
+  var btn=document.getElementById('submit-btn');btn.textContent='Submitting…';btn.disabled=true;
+  document.getElementById('s-name').textContent=fname+' '+lname;
+  document.getElementById('s-biz').textContent=biz;
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify(rec),headers:{'Content-Type':'text/plain'}})
+    .then(function(r){return r.json();})
+    .then(function(){document.getElementById('sheets-ok').style.display='flex';document.getElementById('sheets-err').style.display='none';})
+    .catch(function(){document.getElementById('sheets-ok').style.display='none';document.getElementById('sheets-err').style.display='block';})
+    .finally(function(){btn.textContent='Submit application';btn.disabled=false;document.getElementById('form-view').style.display='none';document.getElementById('success-view').style.display='block';});
+}
+
+function resetForm(){
+  vType=null;yn={};
+  document.getElementById('form-view').style.display='block';
+  document.getElementById('success-view').style.display='none';
+  ['biz-name','est-year','region','website','instagram','fname','lname','email','phone','tasting-permit-no','retail-license-no','retail-expiry','other-brand','notes'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  ['wine-count','spirit-count','source'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  document.querySelectorAll('.wine-type,.spirit-type,.brand-item-cb,.req-check').forEach(function(c){c.checked=false;});
+  document.querySelectorAll('.wf-radio-pill').forEach(function(p){p.classList.remove('selected');});
+  document.querySelectorAll('.brand-item').forEach(function(b){b.classList.remove('checked');});
+  document.querySelectorAll('.wf-yn-btn').forEach(function(b){b.classList.remove('active');});
+  ['wine-offerings','spirits-offerings','booth-section','permit-section','tasting-yes','tasting-no','selling-yes','retail-yes','retail-no','tips-no'].forEach(function(id){hide(document.getElementById(id));});
+  document.getElementById('card-wine').classList.remove('active');
+  document.getElementById('card-spirits').classList.remove('active');
+  document.getElementById('char-count').textContent='0';
+  document.getElementById('err-msg').style.display='none';
+}
+</script>
+</body>
+</html>
