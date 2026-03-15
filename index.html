@@ -99,6 +99,18 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .sheets-err{font-size:13px;color:#854F0B;margin-top:.6rem;display:none;}
 .reset-btn{margin-top:1.75rem;padding:11px 32px;background:transparent;border:0.5px solid #D3D1C7;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#5F5E5A;cursor:pointer;transition:all .15s;}
 .reset-btn:hover{border-color:#993C1D;color:#993C1D;}
+.deadline-banner{display:flex;align-items:center;gap:12px;background:#FAEEDA;border:0.5px solid #EF9F27;border-radius:12px;padding:12px 16px;margin-bottom:1.5rem;}
+.deadline-banner svg{width:18px;height:18px;flex-shrink:0;color:#854F0B;}
+.deadline-banner-text{font-size:13px;color:#633806;line-height:1.5;}
+.deadline-banner-text strong{font-weight:500;}
+.deadline-expired{background:#FCEBEB;border-color:#F09595;}
+.deadline-expired .deadline-banner-text{color:#501313;}
+.deadline-expired svg{color:#A32D2D;}
+.auth-box{border:0.5px solid #D3D1C7;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;background:#FAF9F7;}
+.auth-box-title{font-size:12px;font-weight:500;color:#5F5E5A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.auth-confirm-row{display:flex;align-items:flex-start;gap:12px;margin-top:14px;padding-top:14px;border-top:0.5px solid #E8E6E0;}
+.auth-confirm-row input[type="checkbox"]{width:17px;height:17px;min-width:17px;margin-top:2px;accent-color:#993C1D;cursor:pointer;}
+.auth-confirm-label{font-size:13px;color:#1a1a18;line-height:1.6;cursor:pointer;}
 @media(max-width:520px){
   .wf-grid,.wf-type-selector,.event-summary,.brand-grid{grid-template-columns:1fr;}
   .ev-cell:nth-child(odd){border-right:none;}
@@ -121,6 +133,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   </div>
 
   <div class="card" id="form-view">
+
+    <!-- Deadline banner -->
+    <div class="deadline-banner" id="deadline-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <div class="deadline-banner-text"><strong>Application deadline: Friday, April 17, 2026.</strong> Submissions will not be accepted after this date. Please complete and submit your application before the deadline to secure your spot.</div>
+    </div>
 
     <!-- Event summary -->
     <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">What to expect</span><div class="wf-divider-line"></div></div>
@@ -233,8 +251,23 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="wf-field"><label class="wf-label">Special requirements or notes</label><textarea id="notes" placeholder="Electrical outlet, ice, refrigeration, accessibility needs…" maxlength="300"></textarea><div class="char-count"><span id="char-count">0</span> / 300</div></div>
     <div class="wf-field"><label class="wf-label">How did you hear about us?</label><select id="source"><option value="">Select…</option><option>Email newsletter</option><option>Social media</option><option>Word of mouth</option><option>Previous event</option><option>Press / media</option><option>Other</option></select></div>
 
+    <!-- Authorized representative -->
+    <div class="wf-divider"><div class="wf-divider-line"></div><span class="wf-section-label">Authorization</span><div class="wf-divider-line"></div></div>
+    <div class="auth-box">
+      <div class="auth-box-title">Authorized representative</div>
+      <div class="wf-grid">
+        <div class="wf-field"><label class="wf-label">Representative first name <span class="req">*</span></label><input type="text" id="auth-fname" placeholder="First name"/></div>
+        <div class="wf-field"><label class="wf-label">Representative last name <span class="req">*</span></label><input type="text" id="auth-lname" placeholder="Last name"/></div>
+      </div>
+      <div class="wf-field"><label class="wf-label">Title / role at organization <span class="req">*</span></label><input type="text" id="auth-title" placeholder="e.g. Owner, Sales Director, Brand Ambassador"/></div>
+      <div class="auth-confirm-row">
+        <input type="checkbox" id="auth-confirm"/>
+        <label class="auth-confirm-label" for="auth-confirm">I, <strong id="auth-name-display" style="font-weight:500;">the undersigned</strong>, confirm that I am an authorized representative of the above business and have the authority to submit this application and make commitments on its behalf. I agree to the <a href="#" style="color:#993C1D;text-decoration:none;">vendor terms</a> and <a href="#" style="color:#993C1D;text-decoration:none;">event guidelines</a>, and acknowledge that all information provided is accurate.</label>
+      </div>
+    </div>
+
     <div class="submit-area">
-      <p class="agree-txt">By submitting you agree to our <a href="#">vendor terms</a> and <a href="#">event guidelines</a>. Maryland ABC regulations apply to all vendors. Applications are reviewed within 5 business days.</p>
+      <p class="agree-txt">Maryland ABC regulations apply to all vendors. Applications are reviewed within 5 business days. Deadline: <strong>Friday, April 17, 2026.</strong></p>
       <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit application</button>
       <p class="err-msg" id="err-msg"></p>
     </div>
@@ -245,6 +278,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#993C1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2 class="success-title">Application received</h2>
     <p class="success-msg">Thank you, <strong id="s-name"></strong>! We've received the application for <strong id="s-biz"></strong> and will be in touch within 5 business days.</p>
+    <p style="font-size:12px;color:#888780;margin-top:.5rem;">Submitted by <span id="s-auth" style="font-style:italic;"></span> as authorized representative.</p>
     <div class="sheets-ok" id="sheets-ok"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 8 6 12 14 4"/></svg> Saved to Google Sheets</div>
     <div class="sheets-err" id="sheets-err">Could not reach Google Sheets — please contact the organizer directly.</div>
     <button class="reset-btn" onclick="resetForm()">Submit another application</button>
@@ -253,7 +287,152 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 </div>
 <script>
 var SHEET_URL='https://script.google.com/macros/s/AKfycbw1WMhEKy9NjmFMO-X4jTLREZh9ED1UoiMxwrrRZ8NDQBNDvh-mGYCWUP2bjtXgjJrYPg/exec';
+var DEADLINE=new Date('2026-04-17T23:59:59');
 var vType=null,yn={};
+
+document.getElementById('notes').addEventListener('input',function(){document.getElementById('char-count').textContent=this.value.length;});
+document.querySelectorAll('.wf-radio-pill input').forEach(function(cb){cb.addEventListener('change',function(){this.closest('.wf-radio-pill').classList.toggle('selected',this.checked);});});
+
+function updateAuthName(){
+  var fn=document.getElementById('auth-fname').value.trim();
+  var ln=document.getElementById('auth-lname').value.trim();
+  var display=document.getElementById('auth-name-display');
+  display.textContent=(fn||ln)?(fn+' '+ln).trim():'the undersigned';
+}
+document.getElementById('auth-fname').addEventListener('input',updateAuthName);
+document.getElementById('auth-lname').addEventListener('input',updateAuthName);
+
+(function checkDeadline(){
+  var now=new Date();
+  var banner=document.getElementById('deadline-banner');
+  var btn=document.getElementById('submit-btn');
+  if(now>DEADLINE){
+    banner.classList.add('deadline-expired');
+    banner.querySelector('.deadline-banner-text').innerHTML='<strong>The application deadline has passed (April 17, 2026).</strong> We are no longer accepting new vendor applications for this event. Please contact the organizer directly if you have questions.';
+    btn.disabled=true;
+    btn.textContent='Deadline passed';
+  }
+})();
+
+function show(el){if(el){el.classList.remove('hidden');el.classList.add('visible');}}
+function hide(el){if(el){el.classList.remove('visible');el.classList.add('hidden');}}
+function toggleBrand(l){setTimeout(function(){l.classList.toggle('checked',l.querySelector('input').checked);},0);}
+
+function setType(t){
+  vType=t;
+  document.getElementById('card-wine').classList.toggle('active',t==='wine');
+  document.getElementById('card-spirits').classList.toggle('active',t==='spirits');
+  document.getElementById('type-selector').classList.remove('error');
+  document.getElementById('type-error').style.display='none';
+  if(t==='wine'){show(document.getElementById('wine-offerings'));hide(document.getElementById('spirits-offerings'));document.getElementById('region-label').innerHTML='Region / Appellation <span class="req">*</span>';}
+  else{show(document.getElementById('spirits-offerings'));hide(document.getElementById('wine-offerings'));document.getElementById('region-label').innerHTML='State / country of origin <span class="req">*</span>';}
+  show(document.getElementById('booth-section'));show(document.getElementById('permit-section'));
+}
+
+function setYN(k,v){
+  yn[k]=v;
+  document.querySelectorAll('button[onclick]').forEach(function(b){
+    var o=b.getAttribute('onclick');
+    if(o==="setYN('"+k+"',true)") b.classList.toggle('active',v===true);
+    if(o==="setYN('"+k+"',false)") b.classList.toggle('active',v===false);
+  });
+  var ye=document.getElementById(k+'-yes'),ne=document.getElementById(k+'-no');
+  if(ye){v?show(ye):hide(ye);}
+  if(ne){v?hide(ne):show(ne);}
+}
+
+function showErr(m){var e=document.getElementById('err-msg');e.textContent=m;e.style.display='block';e.scrollIntoView({behavior:'smooth',block:'center'});}
+
+function buildRec(){
+  var types=vType==='wine'?[...document.querySelectorAll('.wine-type:checked')].map(function(x){return x.value;}).join(', '):[...document.querySelectorAll('.spirit-type:checked')].map(function(x){return x.value;}).join(', ');
+  var cnt=vType==='wine'?document.getElementById('wine-count').value:document.getElementById('spirit-count').value;
+  var branded=[...document.querySelectorAll('.brand-item-cb:checked')].map(function(x){return x.value;}).join(', ');
+  return{
+    submitted:new Date().toLocaleDateString('en-US'),
+    bizName:document.getElementById('biz-name').value.trim(),
+    estYear:document.getElementById('est-year').value.trim(),
+    region:document.getElementById('region').value.trim(),
+    website:document.getElementById('website').value.trim(),
+    instagram:document.getElementById('instagram').value.trim(),
+    vendorType:vType==='wine'?'Wine':'Spirits',
+    products:types,productCount:cnt,
+    firstName:document.getElementById('fname').value.trim(),
+    lastName:document.getElementById('lname').value.trim(),
+    email:document.getElementById('email').value.trim(),
+    phone:document.getElementById('phone').value.trim(),
+    tastingPermit:yn['tasting']?'Yes':'No',
+    tastingPermitNo:(document.getElementById('tasting-permit-no')||{value:''}).value.trim(),
+    selling:yn['selling']?'Yes':'No',
+    retailLicense:yn['retail']!==undefined?(yn['retail']?'Yes':'No'):'N/A',
+    retailLicenseNo:(document.getElementById('retail-license-no')||{value:''}).value.trim(),
+    retailExpiry:(document.getElementById('retail-expiry')||{value:''}).value.trim(),
+    tipsCert:yn['tips']?'Yes':'Not yet',
+    brandedItems:branded,
+    otherBrand:document.getElementById('other-brand').value.trim(),
+    notes:document.getElementById('notes').value.trim(),
+    source:document.getElementById('source').value,
+    authRepName:document.getElementById('auth-fname').value.trim()+' '+document.getElementById('auth-lname').value.trim(),
+    authRepTitle:document.getElementById('auth-title').value.trim(),
+    authorizedConfirmed:'Yes'
+  };
+}
+
+function submitForm(){
+  document.getElementById('err-msg').style.display='none';
+  if(new Date()>DEADLINE){showErr('The application deadline has passed. Submissions are no longer being accepted.');return;}
+  if(!vType){
+    document.getElementById('type-selector').classList.add('error');
+    document.getElementById('type-error').style.display='block';
+    document.getElementById('type-selector').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  var biz=document.getElementById('biz-name').value.trim(),region=document.getElementById('region').value.trim(),fname=document.getElementById('fname').value.trim(),lname=document.getElementById('lname').value.trim(),email=document.getElementById('email').value.trim();
+  if(!biz){showErr('Please enter your business name.');return;}
+  if(!region){showErr('Please enter your region or origin.');return;}
+  if(vType==='wine'){if(!document.querySelectorAll('.wine-type:checked').length){showErr('Please select at least one wine type.');return;}if(!document.getElementById('wine-count').value){showErr('Please select how many wines you\'ll present.');return;}}
+  else{if(!document.querySelectorAll('.spirit-type:checked').length){showErr('Please select at least one spirit category.');return;}if(!document.getElementById('spirit-count').value){showErr('Please select how many products you\'ll present.');return;}}
+  var mc=document.querySelectorAll('.must-confirm');for(var i=0;i<mc.length;i++){if(!mc[i].checked){showErr('Please confirm all required booth requirements.');return;}}
+  if(!fname||!lname){showErr('Please enter your full name.');return;}
+  if(!email||!email.includes('@')){showErr('Please enter a valid email address.');return;}
+  if(yn['tasting']===undefined){showErr('Please answer the Maryland tasting permit question.');return;}
+  if(yn['selling']===undefined){showErr('Please answer whether you\'ll be selling products.');return;}
+  if(yn['tips']===undefined){showErr('Please answer the responsible service certification question.');return;}
+  var afn=document.getElementById('auth-fname').value.trim(),aln=document.getElementById('auth-lname').value.trim(),atitle=document.getElementById('auth-title').value.trim();
+  if(!afn||!aln){showErr('Please enter the authorized representative\'s full name.');return;}
+  if(!atitle){showErr('Please enter the authorized representative\'s title or role.');return;}
+  if(!document.getElementById('auth-confirm').checked){showErr('Please check the authorization box to confirm you are an authorized representative.');return;}
+  var rec=buildRec();
+  var btn=document.getElementById('submit-btn');btn.textContent='Submitting…';btn.disabled=true;
+  document.getElementById('s-name').textContent=fname+' '+lname;
+  document.getElementById('s-biz').textContent=biz;
+  document.getElementById('s-auth').textContent=afn+' '+aln+(atitle?', '+atitle:'');
+  fetch(SHEET_URL,{method:'POST',body:JSON.stringify(rec),headers:{'Content-Type':'text/plain'}})
+    .then(function(r){return r.json();})
+    .then(function(){document.getElementById('sheets-ok').style.display='flex';document.getElementById('sheets-err').style.display='none';})
+    .catch(function(){document.getElementById('sheets-ok').style.display='none';document.getElementById('sheets-err').style.display='block';})
+    .finally(function(){btn.textContent='Submit application';btn.disabled=false;document.getElementById('form-view').style.display='none';document.getElementById('success-view').style.display='block';window.scrollTo({top:0,behavior:'smooth'});});
+}
+
+function resetForm(){
+  vType=null;yn={};
+  document.getElementById('form-view').style.display='block';
+  document.getElementById('success-view').style.display='none';
+  ['biz-name','est-year','region','website','instagram','fname','lname','email','phone','tasting-permit-no','retail-license-no','retail-expiry','other-brand','notes','auth-fname','auth-lname','auth-title'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  ['wine-count','spirit-count','source'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  document.querySelectorAll('.wine-type,.spirit-type,.brand-item-cb,.req-check').forEach(function(c){c.checked=false;});
+  document.getElementById('auth-confirm').checked=false;
+  document.getElementById('auth-name-display').textContent='the undersigned';
+  document.querySelectorAll('.wf-radio-pill').forEach(function(p){p.classList.remove('selected');});
+  document.querySelectorAll('.brand-item').forEach(function(b){b.classList.remove('checked');});
+  document.querySelectorAll('.wf-yn-btn').forEach(function(b){b.classList.remove('active');});
+  ['wine-offerings','spirits-offerings','booth-section','permit-section','tasting-yes','tasting-no','selling-yes','retail-yes','retail-no','tips-no'].forEach(function(id){hide(document.getElementById(id));});
+  document.getElementById('card-wine').classList.remove('active');
+  document.getElementById('card-spirits').classList.remove('active');
+  document.getElementById('char-count').textContent='0';
+  document.getElementById('err-msg').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
 
 document.getElementById('notes').addEventListener('input',function(){document.getElementById('char-count').textContent=this.value.length;});
 document.querySelectorAll('.wf-radio-pill input').forEach(function(cb){cb.addEventListener('change',function(){this.closest('.wf-radio-pill').classList.toggle('selected',this.checked);});});
